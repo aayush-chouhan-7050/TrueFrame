@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrueFrame | AI Video Authenticity Analysis</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="main-header">
+        <nav class="container">
+            <a href="/" class="logo">TrueFrame</a>
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-primary">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <h1>AI Video Authenticity Analysis</h1>
+                <p>Instantly determine if a video is genuine or AI-generated. TrueFrame's advanced algorithms provide fast, accurate, and private analysis.</p>
+            </div>
+        </section>
+
+        <section class="upload-section">
+            <div class="container">
+                <form id="upload-form" class="upload-box">
+                    <div class="upload-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    </div>
+                    <h2>Upload Your Video</h2>
+                    <p>Drag & drop a file or click to browse</p>
+                    <input type="file" id="video-input" name="video" accept="video/mp4,video/quicktime,video/x-msvideo,video/webm" hidden>
+                    <button type="button" id="choose-file-btn" class="btn btn-primary">Choose File</button>
+                    <p class="supported-files">Supports MP4, MOV, AVI, WebM (Max 100MB)</p>
+                </form>
+            </div>
+        </section>
+
+        <section id="result-section" class="result-section hidden">
+             <div class="container">
+                <div id="loader" class="loader-container">
+                    <div class="loader"></div>
+                    <p>Analyzing... this may take a moment.</p>
+                </div>
+                <div id="result-display" class="result-grid hidden">
+                    <div class="result-card" id="video-preview-card">
+                        <h3>Video Preview</h3>
+                        <video id="video-preview" width="100%" controls></video>
+                        <div class="file-info">
+                            <span id="file-name-display"></span>
+                            <span id="file-size-display"></span>
+                        </div>
+                    </div>
+                    <div class="result-card" id="detection-results-card">
+                        <h3>Analysis Result</h3>
+                        <div id="verdict-display" class="verdict-display">
+                            <h2 id="verdict-text"></h2>
+                            <p id="confidence-text"></p>
+                        </div>
+                         <button id="reset-btn" type="button" class="btn btn-secondary">Analyze Another Video</button>
+                    </div>
+                </div>
+                 <div id="error-display" class="error-container hidden">
+                    <h3>Analysis Failed</h3>
+                    <p id="error-text"></p>
+                    <button id="reset-error-btn" type="button" class="btn btn-secondary">Try Again</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 TrueFrame. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
