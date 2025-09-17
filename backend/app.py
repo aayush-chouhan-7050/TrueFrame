@@ -15,7 +15,7 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100 MB upload limit
 # --- Model Loading ---
 print("🚀 Initializing TrueFrame AI Engine...")
 device = torch.device("cpu")
-MODEL_PATH = 'deepfake_detector_best_model.pth'
+MODEL_PATH = 'deepfake_detector_ultimate_model.pth'
 class_names = ['fake', 'real']
 
 # --- Define Model Architecture ---
