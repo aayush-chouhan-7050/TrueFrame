@@ -1,0 +1,15 @@
+# Python backend
+/backend/venv/
+__pycache__/
+*.pyc
+
+# Node.js frontend
+/frontend/node_modules/
+/frontend/uploads/
+npm-debug.log
+
+# Large model files (optional but recommended)
+*.pth
+
+# macOS system files
+.DS_Store
