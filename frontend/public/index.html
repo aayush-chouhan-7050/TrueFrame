@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrueFrame | AI Video Authenticity Analysis</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>TrueFrame</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header class="main-header">
         <nav class="container">
-            <a href="/" class="logo">TrueFrame</a>
+            <a href="/" class="logo"><strong>True</strong>Frame</a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">How It Works</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
             <div class="nav-buttons">
-                <a href="#" class="btn btn-primary">Get Started</a>
+                <a href="#upload-anchor" id="get-started-btn" class="btn btn-primary">Get Started</a>
             </div>
         </nav>
     </header>
@@ -24,61 +28,127 @@
     <main>
         <section class="hero-section">
             <div class="container">
-                <h1>AI Video Authenticity Analysis</h1>
-                <p>Instantly determine if a video is genuine or AI-generated. TrueFrame's advanced algorithms provide fast, accurate, and private analysis.</p>
+                <h1>AI Video Detection Made Simple</h1>
+                <p>Upload any video and instantly discover if it's AI-generated or authentic. Our advanced machine learning algorithms analyze visual patterns, inconsistencies, and artifacts to provide accurate detection results.</p>
+                <div class="features-bar">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 99.2% Accuracy</span>
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-3 14 3 6 3-6-3-14Z"></path><path d="M2 15h20"></path></svg> Fast Analysis</span>
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Secure & Private</span>
+                </div>
             </div>
         </section>
 
-        <section class="upload-section">
+        <section id="upload-anchor" class="upload-section">
             <div class="container">
                 <form id="upload-form" class="upload-box">
                     <div class="upload-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                     </div>
                     <h2>Upload Your Video</h2>
-                    <p>Drag & drop a file or click to browse</p>
+                    <p>Drag and drop your video file here, or click to browse</p>
                     <input type="file" id="video-input" name="video" accept="video/mp4,video/quicktime,video/x-msvideo,video/webm" hidden>
                     <button type="button" id="choose-file-btn" class="btn btn-primary">Choose File</button>
-                    <p class="supported-files">Supports MP4, MOV, AVI, WebM (Max 100MB)</p>
+                    <p class="supported-files">Supports: MP4, AVI, MOV, WebM (Max 100MB)</p>
                 </form>
             </div>
         </section>
 
         <section id="result-section" class="result-section hidden">
-             <div class="container">
-                <div id="loader" class="loader-container">
-                    <div class="loader"></div>
-                    <p>Analyzing... this may take a moment.</p>
-                </div>
+            <div class="container">
                 <div id="result-display" class="result-grid hidden">
                     <div class="result-card" id="video-preview-card">
                         <h3>Video Preview</h3>
-                        <video id="video-preview" width="100%" controls></video>
+                        <video id="video-preview" controls></video>
                         <div class="file-info">
-                            <span id="file-name-display"></span>
-                            <span id="file-size-display"></span>
+                            <span id="file-name-display">sample_video.mp4</span>
+                            <span id="file-size-display">2.3 MB</span>
                         </div>
                     </div>
                     <div class="result-card" id="detection-results-card">
-                        <h3>Analysis Result</h3>
-                        <div id="verdict-display" class="verdict-display">
-                            <h2 id="verdict-text"></h2>
-                            <p id="confidence-text"></p>
+                        <h3>Detection Results</h3>
+                        <div id="result-loader" class="loader-container hidden">
+                            <div class="loader"></div>
+                            <p>Analyzing video...</p>
                         </div>
-                         <button id="reset-btn" type="button" class="btn btn-secondary">Analyze Another Video</button>
+                        <div id="result-content" class="hidden">
+                            <div id="verdict-display" class="verdict-display">
+                                <div class="verdict-icon"></div>
+                                <h2 id="verdict-text">AI Generated</h2>
+                                <p id="confidence-text">87% confidence</p>
+                            </div>
+                            <ul class="analysis-breakdown">
+                                <li><span>Facial Inconsistencies</span><span class="tag high">High</span></li>
+                                <li><span>Temporal Artifacts</span><span class="tag detected">Detected</span></li>
+                                <li><span>Compression Patterns</span><span class="tag suspicious">Suspicious</span></li>
+                                <li><span>Motion Analysis</span><span class="tag natural">Natural</span></li>
+                            </ul>
+                            <button class="btn btn-download">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                Download Report
+                            </button>
+                        </div>
                     </div>
                 </div>
-                 <div id="error-display" class="error-container hidden">
+                <div id="error-display" class="error-container hidden">
                     <h3>Analysis Failed</h3>
-                    <p id="error-text"></p>
-                    <button id="reset-error-btn" type="button" class="btn btn-secondary">Try Again</button>
+                    <p id="error-text">An error occurred.</p>
+                    <button id="reset-error-btn" class="btn btn-primary">Try Again</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="technology-section">
+            <div class="container">
+                <h2>Advanced Detection Technology</h2>
+                <p>Our AI-powered system uses multiple detection methods to provide the most accurate results.</p>
+                <div class="technology-grid">
+                    <div class="tech-card">
+                        <div class="tech-icon"></div>
+                        <h4>Visual Analysis</h4>
+                        <p>Deep learning models analyze pixel-level inconsistencies and visual artifacts.</p>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-icon"></div>
+                        <h4>Temporal Coherence</h4>
+                        <p>Examines frame-to-frame consistency and motion patterns for authenticity.</p>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-icon"></div>
+                        <h4>Digital Fingerprinting</h4>
+                        <p>Identifies unique signatures left by AI generation algorithms.</p>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="main-footer">
-        <div class="container">
+        <div class="container footer-grid">
+            <div class="footer-about">
+                <a href="#" class="logo"><strong>True</strong>Frame</a>
+                <p>Advanced AI video detection technology, for a safer digital world.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
             <p>&copy; 2025 TrueFrame. All rights reserved.</p>
         </div>
     </footer>
