@@ -106,16 +106,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displaySuccess(result) {
-        lastAnalysisResult = result; 
-        resultLoader.classList.add('hidden');
-        resultContent.classList.remove('hidden');
+    lastAnalysisResult = result; 
+    resultLoader.classList.add('hidden');
+    resultContent.classList.remove('hidden');
+
+    // --- NEW: Adjust confidence for display ---
+    const originalConfidence = parseFloat(result.confidence);
+    // Lower by 10%, but don't let it go below 51% (the decision threshold)
+    const displayConfidence = Math.max(51, originalConfidence - 10);
+    
+    verdictText.textContent = result.prediction === 'FAKE' ? 'AI Generated' : 'Likely REAL';
+    confidenceText.textContent = `${displayConfidence.toFixed(2)}% confidence`;
+    
+    verdictDisplay.className = 'verdict-display';
+    verdictDisplay.classList.add(result.prediction.toLowerCase());
+
+    // --- NEW: Dynamically build the analysis breakdown list ---
+    const breakdownList = document.querySelector('.analysis-breakdown');
+    breakdownList.innerHTML = ''; // Clear static content
+
+    result.breakdown.forEach(item => {
+        const listItem = document.createElement('li');
         
-        verdictText.textContent = result.prediction === 'FAKE' ? 'AI Generated' : 'Likely REAL';
-        confidenceText.textContent = `${result.confidence}% confidence`;
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = item.name;
         
-        verdictDisplay.className = 'verdict-display';
-        verdictDisplay.classList.add(result.prediction.toLowerCase());
-    }
+        const tagSpan = document.createElement('span');
+        tagSpan.textContent = item.tag;
+        // The tag's class is the lowercase version of its text content
+        tagSpan.className = `tag ${item.tag.toLowerCase()}`;
+        
+        listItem.appendChild(nameSpan);
+        listItem.appendChild(tagSpan);
+        breakdownList.appendChild(listItem);
+    });
+}
 
     function displayError(message) {
         resultDisplay.classList.add('hidden');
@@ -143,7 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const fileName = fileNameDisplay.textContent;
         const fileSize = fileSizeDisplay.textContent;
         const verdict = lastAnalysisResult.prediction;
-        const confidence = lastAnalysisResult.confidence;
+        const originalConfidence = parseFloat(lastAnalysisResult.confidence);
+        // Lower by 10%, but don't let it go below 51% (the decision threshold)
+        const confidence = Math.max(51, originalConfidence - 10);
         const isFake = verdict === 'FAKE';
 
         // --- Header ---
