@@ -16,13 +16,21 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Now, copy the application code
 COPY app.py .
 
-# Download and Unzip the Model from GitHub Releases
+# --- Download, Unzip, and Reorganize the Model ---
 ARG MODEL_URL="https://github.com/aayush-chouhan-7050/TrueFrame/releases/download/v1.0.0/TrueFrame-Models-v1.0.zip"
+
 RUN wget -O models.zip "${MODEL_URL}" && \
     unzip models.zip && \
+    # --- FIX & DEBUG ---
+    # 1. (DEBUG) List all files recursively to see the structure in the logs
+    echo "--- File structure after unzip ---" && \
+    ls -R && \
+    # 2. (FIX) Find all .pth files, even in subdirectories, and move them here
+    find . -name "*.pth" -exec mv {} . \; && \
+    # 3. (CLEANUP)
     rm models.zip
 
-# Expose the port the app runs on (Render uses this internally)
+# Expose the port the app runs on
 EXPOSE 10000
 
 # The CMD is a fallback; the Render Start Command will override it.
