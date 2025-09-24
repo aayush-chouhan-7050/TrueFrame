@@ -28,7 +28,10 @@ RUN wget -O models.zip "${MODEL_URL}" && \
     # 2. (FIX) Find all .pth files, even in subdirectories, and move them here
     find . -name "*.pth" -exec mv {} . \; && \
     # 3. (CLEANUP)
-    rm models.zip
+    rm -f models.zip && \
+    # 4. (DEBUG) List files again to confirm they were moved
+    echo "--- File structure after moving models ---" && \
+    ls -l
 
 # Expose the port the app runs on
 EXPOSE 10000
