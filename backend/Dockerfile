@@ -1,40 +1,45 @@
-# Use an official Python runtime as a parent image
+# backend/Dockerfile - Updated for Render
 FROM python:3.11-slim
 
 # Install system dependencies required by OpenCV and other tools
-RUN apt-get update && apt-get install -y libgl1 libglib2.0-0 wget unzip
+RUN apt-get update && apt-get install -y \
+    libgl1 \
+    libglib2.0-0 \
+    wget \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy ONLY the requirements file first to leverage Docker caching
+# Copy requirements first for better Docker caching
 COPY requirements.txt .
 
 # Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Now, copy the application code
+# Copy the application code
 COPY app.py .
 
-# --- Download, Unzip, and Reorganize the Model ---
+# Download and extract the model files
 ARG MODEL_URL="https://github.com/aayush-chouhan-7050/TrueFrame/releases/download/v1.0.0/TrueFrame-Models-v1.0.zip"
 
-RUN wget -O models.zip "${MODEL_URL}" && \
+RUN echo "📥 Downloading models from: ${MODEL_URL}" && \
+    wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 3 \
+         -O models.zip "${MODEL_URL}" && \
+    echo "📦 Extracting models..." && \
     unzip models.zip && \
-    # --- FIX & DEBUG ---
-    # 1. (DEBUG) List all files recursively to see the structure in the logs
-    echo "--- File structure after unzip ---" && \
-    ls -R && \
-    # 2. (FIX) Find all .pth files, even in subdirectories, and move them here
+    echo "🔍 Checking extracted files:" && \
+    ls -la && \
+    echo "🔧 Moving .pth files to working directory:" && \
     find . -name "*.pth" -exec mv {} . \; && \
-    # 3. (CLEANUP)
+    echo "✅ Final file structure:" && \
+    ls -la *.pth && \
     rm -f models.zip && \
-    # 4. (DEBUG) List files again to confirm they were moved
-    echo "--- File structure after moving models ---" && \
-    ls -l
+    echo "🎯 Model setup complete!"
 
-# Expose the port the app runs on
+# Expose the port that Render expects
 EXPOSE 10000
 
-# The CMD is a fallback; the Render Start Command will override it.
-CMD ["python", "-m", "gunicorn", "--bind", "0.0.0.0:10000", "app:app"]
+# Start the application with Gunicorn for production
+CMD ["python", "-m", "gunicorn", "--bind", "0.0.0.0:10000", "--workers", "1", "--timeout", "120", "app:app"]
