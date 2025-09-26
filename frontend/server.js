@@ -8,7 +8,7 @@ const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
-const PYTHON_API_URL = 'https://trueframe-backend.onrender.com/api/predict'; // Updated endpoint
+const PYTHON_API_URL = 'https://snickersnee-trueframe-ai-engine.hf.space/api/predict'; // Updated endpoint
 
 // --- Middleware Setup ---
 app.use(cors()); // Enable Cross-Origin Resource Sharing
