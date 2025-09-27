@@ -9,11 +9,11 @@
   "routes": [
     {
       "src": "/upload",
-      "dest": "/frontend/api/upload"
+      "dest": "/api/upload" 
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/public/$1"
+      "dest": "/public/$1"
     }
   ]
 }
