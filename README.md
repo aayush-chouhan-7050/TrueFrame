@@ -7,8 +7,6 @@ TrueFrame is a full-stack web application designed to detect AI-generated video 
 - **Frontend (Render):** [**https://trueframe.onrender.com/**](https://trueframe.onrender.com/)
 - **Backend (Hugging Face):** [**https://huggingface.co/spaces/snickersnee/TrueFrame-AI-Engine**](https://huggingface.co/spaces/snickersnee/TrueFrame-AI-Engine)
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/snickersnee/TrueFrame-AI-Engine)
 
 ## ✨ Key Features
 
@@ -23,13 +21,10 @@ TrueFrame is a full-stack web application designed to detect AI-generated video 
 
 Here's a glimpse of the new and improved TrueFrame interface.
 
-| Landing Page (Dark Mode) | How It Works Section |
+| Landing Page (Dark Mode) | Upload Section |
 | :---: | :---: |
-| ![Landing Page](Screenshot%202025-09-28%20at%2017.16.21.png) | ![How It Works](Screenshot%202025-09-28%20at%2017.16.45.png) |
+| ![Landing Page](./docs/landing_page.png) | ![Upload](./docs/upload.png) |
 
-| Technology Section | Model Performance |
-| :---: | :---: |
-| ![Technology Section](Screenshot%202025-09-28%20at%2017.16.35.png) | *Final Model Confusion Matrix* |
 
 ## 🏛️ Project Architecture
 
@@ -176,7 +171,7 @@ Follow these instructions to get the project running on your local machine.
       PORT=3000
 
       # AI Backend API URL
-      PYTHON_API_URL="UR BACKEND API"
+      PYTHON_API_URL="BACKEND API"
       ```
 
 ### Running the Application
