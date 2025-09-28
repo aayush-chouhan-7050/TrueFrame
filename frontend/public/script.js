@@ -23,11 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
         errorText: document.getElementById('error-text'),
         resetErrorBtn: document.getElementById('reset-error-btn'),
         downloadReportBtn: document.getElementById('download-report-btn'),
-        analysisBreakdownList: document.querySelector('.analysis-breakdown')
+        analysisBreakdownList: document.querySelector('.analysis-breakdown'),
+        timerDisplay: document.getElementById('timer-display')
     };
 
     // --- State Variable ---
     let lastAnalysisResult = null;
+    let countdownInterval = null;
 
     // --- Event Listeners ---
     const setupEventListeners = () => {
@@ -74,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         showLoader(file);
+        startTimer(120);
 
         const formData = new FormData();
         formData.append('video', file);
@@ -108,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderSuccess(result) {
+        stopTimer();
         lastAnalysisResult = result;
         ui.resultLoader.classList.add('hidden');
         ui.resultContent.classList.remove('hidden');
@@ -134,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderError(message) {
+        stopTimer();
         ui.resultSection.classList.remove('hidden');
         ui.resultDisplay.classList.add('hidden');
         ui.errorDisplay.classList.remove('hidden');
@@ -141,10 +146,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetUI() {
+        stopTimer();
         ui.resultSection.classList.add('hidden');
         ui.videoInput.value = ''; // Reset file input
         lastAnalysisResult = null;
         URL.revokeObjectURL(ui.videoPreview.src); // Clean up object URL
+    }
+
+    // --- Timer Functions ---
+    function startTimer(durationInSeconds) {
+        stopTimer();
+        let timer = durationInSeconds;
+
+        const updateDisplay = () => {
+            const minutes = Math.floor(timer / 60);
+            let seconds = timer % 60;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            ui.timerDisplay.textContent = `${minutes}:${seconds}`;
+        };
+
+        updateDisplay();
+
+        countdownInterval = setInterval(() => {
+            timer--;
+            updateDisplay();
+
+            if (timer <= 0) {
+                stopTimer();
+                ui.timerDisplay.textContent = "Still working...";
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            ui.timerDisplay.textContent = '';
+        }
     }
 
     // --- PDF Report Generation (Modularized) ---

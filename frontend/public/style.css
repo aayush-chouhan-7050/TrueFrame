@@ -136,6 +136,21 @@ body {
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 .error-container h3 { color: var(--danger-color); }
 .error-container p { margin-bottom: 20px; }
+.loader-subtext {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 15px;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#timer-display {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 15px;
+}
 
 /* --- Technology Section --- */
 .technology-section { text-align: center; padding: 60px 0; }
