@@ -1,5 +1,4 @@
 # Python backend
-/backend/.env
 /backend/venv/
 __pycache__/
 *.pyc
@@ -14,3 +13,6 @@ npm-debug.log
 
 # macOS system files
 .DS_Store
+
+# Environment variables
+.env
