@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Add jsPDF to the global scope ---
     const { jsPDF } = window.jspdf;
 
-    // --- UI Element References ---
     const ui = {
         uploadForm: document.getElementById('upload-form'),
         videoInput: document.getElementById('video-input'),
@@ -24,36 +22,39 @@ document.addEventListener('DOMContentLoaded', () => {
         resetErrorBtn: document.getElementById('reset-error-btn'),
         downloadReportBtn: document.getElementById('download-report-btn'),
         analysisBreakdownList: document.querySelector('.analysis-breakdown'),
-        timerDisplay: document.getElementById('timer-display')
+        timerDisplay: document.getElementById('timer-display'),
+        darkModeToggle: document.getElementById('dark-mode-toggle'),
     };
 
-    // --- State Variable ---
     let lastAnalysisResult = null;
     let countdownInterval = null;
 
-    // --- Event Listeners ---
+    // SVG icons for dark/light mode toggle
+    const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+    const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+
     const setupEventListeners = () => {
         ui.chooseFileBtn.addEventListener('click', () => ui.videoInput.click());
         ui.videoInput.addEventListener('change', handleFileSelect);
         ui.resetErrorBtn.addEventListener('click', resetUI);
         ui.downloadReportBtn.addEventListener('click', generatePDFReport);
+        ui.darkModeToggle.addEventListener('click', toggleDarkMode);
 
         ui.getStartedBtn.addEventListener('click', (e) => {
             e.preventDefault();
             ui.uploadAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
 
-        // Drag and drop listeners
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             ui.uploadForm.addEventListener(eventName, preventDefaults, false);
         });
+
         ui.uploadForm.addEventListener('dragenter', () => ui.uploadForm.classList.add('dragover'));
         ui.uploadForm.addEventListener('dragover', () => ui.uploadForm.classList.add('dragover'));
         ui.uploadForm.addEventListener('dragleave', () => ui.uploadForm.classList.remove('dragover'));
         ui.uploadForm.addEventListener('drop', handleDrop, false);
     };
 
-    // --- Core Functions ---
     function handleFileSelect(event) {
         const file = event.target.files?.[0];
         if (file) startAnalysis(file);
@@ -96,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- UI Update Functions ---
     function showLoader(file) {
         ui.resultSection.classList.remove('hidden');
         ui.resultDisplay.classList.remove('hidden');
@@ -122,10 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.verdictText.textContent = isFake ? 'AI Generated' : 'Likely REAL';
         ui.confidenceText.textContent = `${displayConfidence.toFixed(2)}% confidence`;
         
-        ui.verdictDisplay.className = 'verdict-display'; // Reset classes
+        ui.verdictDisplay.className = 'verdict-display';
         ui.verdictDisplay.classList.add(isFake ? 'fake' : 'real');
 
-        // Dynamically build the analysis breakdown list
         ui.analysisBreakdownList.innerHTML = '';
         result.breakdown.forEach(item => {
             const listItem = `
@@ -148,12 +147,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetUI() {
         stopTimer();
         ui.resultSection.classList.add('hidden');
-        ui.videoInput.value = ''; // Reset file input
+        ui.videoInput.value = '';
         lastAnalysisResult = null;
-        URL.revokeObjectURL(ui.videoPreview.src); // Clean up object URL
+        URL.revokeObjectURL(ui.videoPreview.src);
     }
 
-    // --- Timer Functions ---
     function startTimer(durationInSeconds) {
         stopTimer();
         let timer = durationInSeconds;
@@ -185,8 +183,28 @@ document.addEventListener('DOMContentLoaded', () => {
             ui.timerDisplay.textContent = '';
         }
     }
+    
+    // --- Dark Mode ---
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode);
+        ui.darkModeToggle.innerHTML = isDarkMode ? sunIcon : moonIcon;
+    }
 
-    // --- PDF Report Generation (Modularized) ---
+    function applyInitialTheme() {
+        const isLightModeSaved = localStorage.getItem('darkMode') === 'false';
+        
+        if (isLightModeSaved) {
+            document.body.classList.remove('dark-mode');
+            ui.darkModeToggle.innerHTML = moonIcon; 
+        } else {
+            document.body.classList.add('dark-mode'); 
+            ui.darkModeToggle.innerHTML = sunIcon; 
+        }
+    }
+
+    // --- PDF Report Generation ---
     function generatePDFReport() {
         if (!lastAnalysisResult) {
             alert('No analysis result is available to download.');
@@ -209,10 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.save(`TrueFrame-Report-${data.fileName}.pdf`);
     }
 
-    // --- PDF Helper Functions ---
     const addPdfHeader = (doc) => {
         const pageWidth = doc.internal.pageSize.width;
-        doc.setFillColor(44, 62, 80); // #2c3e50
+        doc.setFillColor(44, 62, 80);
         doc.rect(0, 0, pageWidth, 25, 'F');
         doc.setFontSize(20).setFont('helvetica', 'bold').setTextColor(255, 255, 255).text("TrueFrame", 15, 17);
         doc.setFontSize(12).setFont('helvetica', 'normal').text("AI Video Detection Report", 53, 17);
@@ -269,12 +286,11 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.text("Page 1 of 1", pageWidth - 35, pageHeight - 15);
     };
 
-    // --- Utility Function ---
     function preventDefaults(e) {
         e.preventDefault();
         e.stopPropagation();
     }
 
-    // --- Initialize the App ---
+    applyInitialTheme();
     setupEventListeners();
 });

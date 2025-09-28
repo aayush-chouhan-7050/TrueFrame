@@ -1,8 +1,14 @@
 # TrueFrame AI: Deepfake Video Detection Engine
 
-TrueFrame is a full-stack web application designed to detect AI-generated video content, specifically deepfakes. It leverages a state-of-the-art deep learning model (EfficientNet-B0) trained on a large-scale, combined dataset to provide high-accuracy analysis. Users can upload a video through a simple web interface and receive a near-instant verdict on its authenticity, complete with a detailed (simulated) breakdown of analytical markers.
+TrueFrame is a full-stack web application designed to detect AI-generated video content, specifically deepfakes. It leverages a state-of-the-art deep learning model (EfficientNet-B0) to provide high-accuracy analysis. Users can upload a video through a modern, responsive web interface and receive a near-instant verdict on its authenticity.
 
+## 🚀 Live Demo
 
+- **Frontend (Render):** [**https://trueframe.onrender.com/**](https://trueframe.onrender.com/)
+- **Backend (Hugging Face):** [**https://huggingface.co/spaces/snickersnee/TrueFrame-AI-Engine**](https://huggingface.co/spaces/snickersnee/TrueFrame-AI-Engine)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/snickersnee/TrueFrame-AI-Engine)
 
 ## ✨ Key Features
 
@@ -11,6 +17,19 @@ TrueFrame is a full-stack web application designed to detect AI-generated video 
 - **User-Friendly Interface:** A clean, responsive, and intuitive UI for easy video uploads and clear presentation of results.
 - **Dynamic Analysis Reports:** Generates a believable, detailed breakdown of detection markers (e.g., Facial Inconsistencies, Temporal Artifacts) based on the model's confidence.
 - **Downloadable PDF Reports:** Users can download a professionally formatted PDF summary of the analysis for their records.
+- **Secure Configuration:** Uses `.env` files for managing environment variables securely in both frontend and backend.
+
+## 📸 Screenshots
+
+Here's a glimpse of the new and improved TrueFrame interface.
+
+| Landing Page (Dark Mode) | How It Works Section |
+| :---: | :---: |
+| ![Landing Page](Screenshot%202025-09-28%20at%2017.16.21.png) | ![How It Works](Screenshot%202025-09-28%20at%2017.16.45.png) |
+
+| Technology Section | Model Performance |
+| :---: | :---: |
+| ![Technology Section](Screenshot%202025-09-28%20at%2017.16.35.png) | *Final Model Confusion Matrix* |
 
 ## 🏛️ Project Architecture
 
@@ -85,16 +104,20 @@ TrueFrame/
 TrueFrame/
 ├── backend/
 │   ├── venv/                     # Virtual environment (ignored by Git)
+│   ├── .env                      # Environment variables for backend
 │   ├── deepfake_detector_ultimate_model.pth  # The final trained model weights
+│   ├── Dockerfile                  # Dockerfile for Hugging Face
 │   ├── app.py                      # The Flask AI server application
 │   └── requirements.txt            # Python dependencies for the backend
 ├── frontend/
 │   ├── node_modules/               # Node.js dependencies (ignored by Git)
 │   ├── public/                     # Static assets served to the client
+│   │   ├── assets/                 #assets favicon.svg confusion_matrix_final.png
 │   │   ├── style.css               # Main stylesheet
 │   │   ├── index.html              # The single-page application HTML
 │   │   └── script.js               # Client-side JavaScript logic
 │   ├── uploads/                    # Temporary storage for uploads (ignored by Git)
+│   ├── .env                      # Environment variables for frontend
 │   ├── package.json                # Node.js project metadata and dependencies
 │   └── server.js                   # The Node.js Express server
 ├── docs/
@@ -127,19 +150,34 @@ Follow these instructions to get the project running on your local machine.
     ```
 
 2.  **Set up the Python Backend:**
-    ```bash
-    cd backend
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-    ```
+    - Navigate to the backend directory: `cd backend`
+    - Create a virtual environment: `python3 -m venv venv`
+    - Activate it: `source venv/bin/activate`
+    - Install dependencies: `pip install -r requirements.txt`
+    - **Important:** Create a `.env` file in the `backend/` directory and add the following content:
+      ```env
+      # Application Configuration
+      PORT=5001
+      LOG_LEVEL="INFO"
+
+      # Model & Inference Settings
+      MODEL_PATH="deepfake_detector_ultimate_model.pth"
+      FRAME_INTERVAL=30
+      INFERENCE_BATCH_SIZE=16
+      ```
     *Note: You must have the trained model file `deepfake_detector_ultimate_model.pth` inside the `backend/` directory.*
 
 3.  **Set up the Node.js Frontend:**
-    ```bash
-    cd ../frontend
-    npm install
-    ```
+    - Navigate to the frontend directory: `cd ../frontend`
+    - Install dependencies: `npm install`
+    - **Important:** Create a `.env` file in the `frontend/` directory. Add the URL of your running backend server.
+      ```env
+      # Server Configuration
+      PORT=3000
+
+      # AI Backend API URL
+      PYTHON_API_URL="UR BACKEND API"
+      ```
 
 ### Running the Application
 

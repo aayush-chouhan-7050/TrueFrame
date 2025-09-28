@@ -3,24 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrueFrame</title>
+    <title>TrueFrame: AI Deepfake Video Detection</title>
+    <meta name="description" content="Detect AI-generated videos and deepfakes with TrueFrame. Our tool offers ~99% accuracy in identifying manipulated video content. Upload your video for a fast and secure analysis.">
+    <meta name="keywords" content="deepfake detection, AI video analysis, video authenticity, fake video detector, TrueFrame, machine learning, computer vision">
+    
+    <meta property="og:title" content="TrueFrame: AI Deepfake Video Detection">
+    <meta property="og:description" content="High-accuracy detection of AI-generated videos. Upload a video to check for deepfakes and manipulated content instantly.">
+    <meta property="og:image" content="assets/confusion_matrix_final.png">
+    <meta property="og:url" content="https://trueframe.onrender.com/">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body>
+<body class="dark-mode">
 
     <header class="main-header">
         <nav class="container">
             <a href="/" class="logo"><strong>True</strong>Frame</a>
             <ul class="nav-links">
                 <li><a href="#">Home</a></li>
-                <li><a href="#">How It Works</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#technology">Technology</a></li>
             </ul>
             <div class="nav-buttons">
+                <button id="dark-mode-toggle" title="Toggle dark mode">🌙</button>
                 <a href="#upload-anchor" id="get-started-btn" class="btn btn-primary">Get Started</a>
             </div>
         </nav>
@@ -29,10 +41,10 @@
     <main>
         <section class="hero-section">
             <div class="container">
-                <h1>AI Video Detection Made Simple</h1>
-                <p>Upload any video and instantly discover if it's AI-generated or authentic. Our advanced machine learning algorithms analyze visual patterns, inconsistencies, and artifacts to provide accurate detection results.</p>
+                <h1>Instantly Detect AI-Generated Videos</h1>
+                <p>TrueFrame is a powerful deepfake detection engine that leverages a state-of-the-art deep learning model to provide high-accuracy analysis. Upload a video and receive a near-instant verdict on its authenticity.</p>
                 <div class="features-bar">
-                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 99.2% Accuracy</span>
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> ~99% Accuracy</span>
                     <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-3 14 3 6 3-6-3-14Z"></path><path d="M2 15h20"></path></svg> Fast Analysis</span>
                     <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Secure & Private</span>
                 </div>
@@ -59,7 +71,9 @@
                 <div id="result-display" class="result-grid hidden">
                     <div class="result-card" id="video-preview-card">
                         <h3>Video Preview</h3>
-                        <video id="video-preview" controls></video>
+                        <div class="video-preview-wrapper">
+                            <video id="video-preview" controls></video>
+                        </div>
                         <div class="file-info">
                             <span id="file-name-display">sample_video.mp4</span>
                             <span id="file-size-display">2.3 MB</span>
@@ -99,27 +113,68 @@
                 </div>
             </div>
         </section>
-
-        <section class="technology-section">
+        
+        <section id="features" class="section-padding">
             <div class="container">
-                <h2>Advanced Detection Technology</h2>
+                <h2 style="text-align: center; margin-bottom: 40px;">Key Features</h2>
+                <div class="technology-grid">
+                    <div class="tech-card">
+                        <h4>High-Accuracy Detection</h4>
+                        <p>Achieves ~99% accuracy on its validation set, trained on a diverse dataset combining FaceForensics++ and Celeb-DF (v2).</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4>Full-Stack Architecture</h4>
+                        <p>Built with a Node.js/Express frontend and a Python/Flask backend for a scalable and robust system.</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4>Downloadable PDF Reports</h4>
+                        <p>Users can download a professionally formatted PDF summary of the analysis for their records.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="technology-section">
+            <div class="container">
+                <h2>How It Works</h2>
+                <p>TrueFrame operates on a two-server model to separate concerns and optimize performance.</p>
+                <div class="technology-grid">
+                    <div class="tech-card">
+                        <h4>1. Frontend Server</h4>
+                        <p>Built with Node.js and Express, this server handles video uploads and serves the user interface you're interacting with now.</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4>2. AI Backend Server</h4>
+                        <p>A powerful Python and Flask server that hosts our pre-trained PyTorch model. It performs the core analysis by extracting frames and running inference to detect deepfakes.</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4>3. Analysis & Results</h4>
+                        <p>The backend aggregates the analysis from video frames to produce a final verdict and confidence score, which is then sent back to you in a clear, easy-to-understand format.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="technology" class="technology-section">
+            <div class="container">
+                <h2>Technology & Performance</h2>
                 <p>Our AI-powered system uses multiple detection methods to provide the most accurate results.</p>
                 <div class="technology-grid">
                     <div class="tech-card">
-                        <div class="tech-icon"></div>
-                        <h4>Visual Analysis</h4>
-                        <p>Deep learning models analyze pixel-level inconsistencies and visual artifacts.</p>
+                        <h4>EfficientNet-B0 Model</h4>
+                        <p>We use the state-of-the-art EfficientNet-B0 model, known for its high accuracy and computational efficiency, as the foundation of our detection engine.</p>
                     </div>
                     <div class="tech-card">
-                        <div class="tech-icon"></div>
-                        <h4>Temporal Coherence</h4>
-                        <p>Examines frame-to-frame consistency and motion patterns for authenticity.</p>
+                        <h4>Robust Training Data</h4>
+                        <p>The model was trained on a massive, combined dataset including FaceForensics++ and the challenging Celeb-DF (v2) to recognize a wide variety of deepfake techniques.</p>
                     </div>
                     <div class="tech-card">
-                        <div class="tech-icon"></div>
-                        <h4>Digital Fingerprinting</h4>
-                        <p>Identifies unique signatures left by AI generation algorithms.</p>
+                        <h4>Exceptional Performance</h4>
+                        <p>The final model was fine-tuned for 10 epochs, achieving a final validation accuracy of ~99%. The confusion matrix below visualizes this high level of performance.</p>
                     </div>
+                </div>
+                <div style="margin-top: 40px;">
+                    <img src="assets/confusion_matrix_final.png" alt="Confusion matrix of the TrueFrame AI model, showing high accuracy in detecting real and fake videos." style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: var(--shadow);">
                 </div>
             </div>
         </section>
@@ -129,12 +184,14 @@
         <div class="container footer-grid">
             <div class="footer-about">
                 <a href="#" class="logo"><strong>True</strong>Frame</a>
-                <p>Advanced AI video detection technology, for a safer digital world.</p>
+                <p>Advanced AI video detection technology, for a safer digital world. This project is licensed under the MIT License by Aayush Chouhan.</p>
             </div>
             <div class="footer-links">
                 <h4>Product</h4>
                 <ul>
-                    <li><a href="#">Features</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#technology">Technology</a></li>
                 </ul>
             </div>
             <div class="footer-links">
@@ -146,7 +203,7 @@
             <div class="footer-links">
                 <h4>Support</h4>
                 <ul>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="https://www.linkedin.com/in/aayush-chouhan/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Contact</a></li>
                     <li><a href="#">Privacy</a></li>
                 </ul>
             </div>
